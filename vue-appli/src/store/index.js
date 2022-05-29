@@ -5,13 +5,12 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: { // 1
-    Tasks: [{id: 'ID',comment: 'コメント', situation: '状態'}]
+    Tasks: []
   },
   getters: { // 2
     Tasks: function(state){
       return state.Tasks;
     }
-    // Tasks: state => state.Tasks
   },
   mutations: { // 3
     setTasks: function(state, Tasks){
