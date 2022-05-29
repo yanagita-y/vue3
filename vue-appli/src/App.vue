@@ -40,21 +40,17 @@
     data() {
       return {
         taskPlus: "",
-//filter用にどのtodoを選ぶかの条件分岐として変数taskSelectを作った、こんなの作らずにやれとツッコミ受けるかも？
         taskSelect: "ALL"
       }
     },
-//viewsフォルダの適当なフォルダから持ってきた（配列Tasksをstoreから引っ張ってくるための）computed、一覧表示する前の配列加工もここで行う
     computed: {
       Tasks: {
         get() {
-//taskSelectがALLの時は、filterを用いて、オブジェクト名situationが「削除」の場合以外を戻り値として配列に入れてTasksとして出力
           if(this.taskSelect == "ALL"){
             return this.$store.getters.Tasks.filter((task) => {
               return task.situation != "削除"
             });
           }else {
-//taskSelectがALLじゃない（つまり「作業中」か「完了」の）時はオブジェクト名situationの要素とtaskSelectが一致するもののみ配列に入れてTasksとして出力
             return this.$store.getters.Tasks.filter((task) => {
               return task.situation == this.taskSelect
             });
@@ -63,16 +59,11 @@
       }
     },
     methods: {
-//ラジオボタンを変更してformSwitchを動かした時、引数をtaskSelectに入れる（これってcomputedに入れた方がいいのかな？まあいっか
-//というかこの引数をcomputed内で直接引数にできるならこの処理もtaskSelectの宣言もいらないのかも？）
       formSwitch: function(select) {
         this.taskSelect = select;
       },
       onButtonClick(taskPlus) {
         if(taskPlus){
-//stateに直接入力をするなというので入力前、加工前の配列をいったんnewTasksに入れる
-//newTasksを加工した後に入力はdispatchで行う
-//・・・dispatch？ひょっとするとdispatch使えばnewTasks何ぞ使わなくても入力できたかも？疲れたのでもういいや、、、（をい）
           const newTasks = this.$store.getters.Tasks;
           const newId = newTasks.length;
           newTasks.push({id: newId, comment: taskPlus, situation: '作業中'});
@@ -80,8 +71,6 @@
           this.taskPlus = '';
         }
       },
-//viewsフォルダの適当なフォルダから持ってきたmethodsの2つ
-//こちらもonButtonClick同様にnewTasksを作ってstateへの直接入力を避けてます
       onButtonClickChange: function(value){
         const newTasks = this.$store.getters.Tasks;
         if(newTasks[value].situation == '作業中'){
